@@ -10,13 +10,14 @@ interface Advice{
 function App() {
 
   const [nome, setNome] = useState<String>();
-  const [advice, setAdvice] = useState<String>();
+  const [personagem, setPersonagem] = useState<any>({});
 
   const getData = useCallback( async()=> {
-    await axios.get('https://api.adviceslip.com/advice')
+    await axios.get('https://swapi.py4e.com/api/people/4')
     .then(function (response) {
      console.log(response.data);
-     setAdvice(response.data.slip.advice);
+     setPersonagem(response.data);
+     
     })
     .catch(function (error) {
       console.error(error);
@@ -27,18 +28,13 @@ function App() {
     getData();
   }, [])
 
-  const defName = (nome: string) => {
-    setNome(nome);
-  }
-
   return (
     <div>
-      <strong>Ola {nome}</strong>
-
-      <strong>{advice}</strong>
-      <button onClick={() => defName('Tomate')}>Tomate</button>
-      <button onClick={() => defName('Batata')}>Batata</button>
-      <button onClick={() => defName('Beterraba')}>Beterraba</button>
+      <h1>{personagem && personagem.name}</h1>
+      <h4>Basic informations: </h4>
+      <p>O personagem {personagem.name} está presente nos filmes:<br/>
+      1- {personagem.films.map ((filme:any) => {return <strong> {filme}</strong>} )} <br/>
+      </p>
 
     </div>
   )
